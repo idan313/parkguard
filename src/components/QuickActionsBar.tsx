@@ -40,32 +40,34 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
         <TouchableOpacity
           style={[styles.actionBtn, styles.wazeBtn]}
           onPress={() => {
-            if (location) {
-              IntegrationsService.navigateWithWaze(location.latitude, location.longitude);
-            }
+            IntegrationsService.navigateWithWaze(location?.latitude, location?.longitude);
           }}
-          disabled={!location}
           activeOpacity={0.8}
         >
           <FontAwesome5 name="waze" size={22} color="#FFFFFF" />
           <Text style={styles.btnText} numberOfLines={1}>Waze</Text>
-          <Text style={styles.subText} numberOfLines={1}>ניווט לרכב</Text>
+          <Text style={styles.subText} numberOfLines={1}>
+            {location ? 'ניווט לרכב' : 'פתח Waze'}
+          </Text>
         </TouchableOpacity>
 
         {/* כפתור Google Maps */}
         <TouchableOpacity
           style={[styles.actionBtn, styles.mapsBtn]}
           onPress={() => {
-            if (location) {
-              IntegrationsService.navigateWithGoogleMaps(location.latitude, location.longitude, 'walking');
-            }
+            IntegrationsService.navigateWithGoogleMaps(
+              location?.latitude,
+              location?.longitude,
+              'walking'
+            );
           }}
-          disabled={!location}
           activeOpacity={0.8}
         >
           <Ionicons name="navigate-circle" size={24} color="#FFFFFF" />
           <Text style={styles.btnText} numberOfLines={1}>מפות</Text>
-          <Text style={styles.subText} numberOfLines={1}>ניווט רגלי</Text>
+          <Text style={styles.subText} numberOfLines={1}>
+            {location ? 'ניווט רגלי' : 'פתח מפות'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -2,21 +2,34 @@ import { Linking, Platform, Alert } from 'react-native';
 
 export class IntegrationsService {
   /**
-   * פתיחת פנגו (Pango)
+   * ניסיון פתיחת סדרת כתובות URL עד שאחת מהן מצליחה
+   */
+  private static async tryOpenUrls(urls: string[]): Promise<boolean> {
+    for (const url of urls) {
+      try {
+        await Linking.openURL(url);
+        return true;
+      } catch (err) {
+        // המשך לכתובת הבאה
+      }
+    }
+    return false;
+  }
+
+  /**
+   * פתיחת פנגו (Pango) - מנסה לפתוח את האפליקציה המותקנת, ואם אינה מותקנת פותח בחנות
    */
   static async openPango(): Promise<void> {
-    const schemeUrl = 'pango://';
-    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.pango.il';
+    const urls = [
+      'pango://',
+      'android-app://com.pango.il',
+      'market://details?id=com.pango.il',
+      'https://play.google.com/store/apps/details?id=com.pango.il',
+    ];
 
-    try {
-      const supported = await Linking.canOpenURL(schemeUrl);
-      if (supported) {
-        await Linking.openURL(schemeUrl);
-      } else {
-        await Linking.openURL(playStoreUrl);
-      }
-    } catch {
-      await Linking.openURL(playStoreUrl);
+    const success = await this.tryOpenUrls(urls);
+    if (!success) {
+      Alert.alert('פנגו', 'לא ניתן לפתוח את פנגו. אנא ודא שהאפליקציה מותקנת במכשיר.');
     }
   }
 
@@ -24,53 +37,76 @@ export class IntegrationsService {
    * פתיחת סלופארק (Cellopark)
    */
   static async openCellopark(): Promise<void> {
-    const schemeUrl = 'cellopark://';
-    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cellopark.android';
+    const urls = [
+      'cellopark://',
+      'android-app://com.cellopark.android',
+      'market://details?id=com.cellopark.android',
+      'https://play.google.com/store/apps/details?id=com.cellopark.android',
+    ];
 
-    try {
-      const supported = await Linking.canOpenURL(schemeUrl);
-      if (supported) {
-        await Linking.openURL(schemeUrl);
-      } else {
-        await Linking.openURL(playStoreUrl);
-      }
-    } catch {
-      await Linking.openURL(playStoreUrl);
+    const success = await this.tryOpenUrls(urls);
+    if (!success) {
+      Alert.alert('סלופארק', 'לא ניתן לפתוח את סלופארק. אנא ודא שהאפליקציה מותקנת במכשיר.');
     }
   }
 
   /**
-   * ניווט ישיר לרכב באמצעות Waze
+   * פתיחה או ניווט ישיר לרכב באמצעות Waze
    */
-  static async navigateWithWaze(latitude: number, longitude: number): Promise<void> {
-    const wazeUrl = `waze://?ll=${latitude},${longitude}&navigate=yes`;
-    const fallbackWeb = `https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
+  static async navigateWithWaze(latitude?: number, longitude?: number): Promise<void> {
+    let urls: string[] = [];
 
-    try {
-      const supported = await Linking.canOpenURL(wazeUrl);
-      if (supported) {
-        await Linking.openURL(wazeUrl);
-      } else {
-        await Linking.openURL(fallbackWeb);
-      }
-    } catch {
-      await Linking.openURL(fallbackWeb);
+    if (latitude !== undefined && longitude !== undefined) {
+      urls = [
+        `waze://?ll=${latitude},${longitude}&navigate=yes`,
+        `https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`,
+        'waze://',
+        'market://details?id=com.waze',
+      ];
+    } else {
+      urls = [
+        'waze://',
+        'android-app://com.waze',
+        'https://waze.com',
+        'market://details?id=com.waze',
+      ];
+    }
+
+    const success = await this.tryOpenUrls(urls);
+    if (!success) {
+      Alert.alert('Waze', 'לא ניתן לפתוח את Waze. אנא ודא שהאפליקציה מותקנת.');
     }
   }
 
   /**
-   * ניווט ישיר לרכב באמצעות Google Maps (כולל אפשרות ניווט רגלי חזרה לרכב)
+   * פתיחה או ניווט ישיר לרכב באמצעות Google Maps
    */
-  static async navigateWithGoogleMaps(latitude: number, longitude: number, mode: 'walking' | 'driving' = 'walking'): Promise<void> {
-    const url = Platform.select({
-      android: `google.navigation:q=${latitude},${longitude}&mode=${mode === 'walking' ? 'w' : 'd'}`,
-      default: `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`,
-    });
+  static async navigateWithGoogleMaps(
+    latitude?: number,
+    longitude?: number,
+    mode: 'walking' | 'driving' = 'walking'
+  ): Promise<void> {
+    let urls: string[] = [];
 
-    try {
-      await Linking.openURL(url);
-    } catch {
-      await Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`);
+    if (latitude !== undefined && longitude !== undefined) {
+      urls = [
+        Platform.OS === 'android'
+          ? `google.navigation:q=${latitude},${longitude}&mode=${mode === 'walking' ? 'w' : 'd'}`
+          : `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`,
+        `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`,
+        `geo:${latitude},${longitude}?q=${latitude},${longitude}`,
+      ];
+    } else {
+      urls = [
+        'geo:0,0',
+        'https://maps.google.com',
+        'android-app://com.google.android.apps.maps',
+      ];
+    }
+
+    const success = await this.tryOpenUrls(urls);
+    if (!success) {
+      Alert.alert('מפות Google', 'לא ניתן לפתוח את אפליקציית המפות.');
     }
   }
 
@@ -85,14 +121,8 @@ export class IntegrationsService {
     }
 
     const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(text)}`;
-    try {
-      const supported = await Linking.canOpenURL(whatsappUrl);
-      if (supported) {
-        await Linking.openURL(whatsappUrl);
-      } else {
-        await Linking.openURL(`https://wa.me/?text=${encodeURIComponent(text)}`);
-      }
-    } catch {
+    const success = await this.tryOpenUrls([whatsappUrl, `https://wa.me/?text=${encodeURIComponent(text)}`]);
+    if (!success) {
       Alert.alert('שיתוף מיקום', text);
     }
   }
