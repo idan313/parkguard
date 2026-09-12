@@ -22,7 +22,7 @@ export class IntegrationsService {
   static async openPango(): Promise<void> {
     const urls = [
       'pango://',
-      'android-app://com.pango.il',
+      'https://www.pango.co.il',
       'market://details?id=com.pango.il',
       'https://play.google.com/store/apps/details?id=com.pango.il',
     ];
@@ -39,7 +39,7 @@ export class IntegrationsService {
   static async openCellopark(): Promise<void> {
     const urls = [
       'cellopark://',
-      'android-app://com.cellopark.android',
+      'https://www.cellopark.co.il',
       'market://details?id=com.cellopark.android',
       'https://play.google.com/store/apps/details?id=com.cellopark.android',
     ];
@@ -66,7 +66,6 @@ export class IntegrationsService {
     } else {
       urls = [
         'waze://',
-        'android-app://com.waze',
         'https://waze.com',
         'market://details?id=com.waze',
       ];
@@ -95,12 +94,13 @@ export class IntegrationsService {
           : `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`,
         `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}&travelmode=${mode}`,
         `geo:${latitude},${longitude}?q=${latitude},${longitude}`,
+        'market://details?id=com.google.android.apps.maps',
       ];
     } else {
       urls = [
         'geo:0,0',
         'https://maps.google.com',
-        'android-app://com.google.android.apps.maps',
+        'market://details?id=com.google.android.apps.maps',
       ];
     }
 

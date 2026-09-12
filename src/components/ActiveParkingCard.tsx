@@ -11,6 +11,21 @@ interface Props {
   onSetMeterReminder: () => void;
 }
 
+const formatFloorDisplay = (floor?: string): string => {
+  if (!floor) return '';
+  const trimmed = floor.trim();
+  if (trimmed.startsWith('-')) {
+    return `מינוס ${trimmed.slice(1)}`;
+  }
+  if (trimmed.startsWith('+')) {
+    return `פלוס ${trimmed.slice(1)}`;
+  }
+  if (trimmed === '0') {
+    return 'קרקע (0)';
+  }
+  return `\u200E${trimmed}`;
+};
+
 export const ActiveParkingCard: React.FC<Props> = ({
   session,
   onEditGarage,
@@ -119,7 +134,7 @@ export const ActiveParkingCard: React.FC<Props> = ({
               {garage?.floor ? (
                 <View style={styles.badgeItem}>
                   <Text style={styles.badgeItemLabel}>קומה:</Text>
-                  <Text style={styles.badgeItemVal}>{garage.floor}</Text>
+                  <Text style={styles.badgeItemVal}>{formatFloorDisplay(garage.floor)}</Text>
                 </View>
               ) : null}
 

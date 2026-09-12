@@ -119,12 +119,24 @@ export const GarageDetailsModal: React.FC<Props> = ({
                     onPress={() => setFloor(isSelected ? '' : f)}
                   >
                     <Text style={[styles.chipText, isSelected && styles.selectedChipText]}>
-                      {f}
+                      {`\u200E${f}`}
                     </Text>
                   </TouchableOpacity>
                 );
               })}
             </ScrollView>
+            {floor ? (
+              <Text style={styles.selectedFloorLabel}>
+                נבחרה קומה:{' '}
+                {floor.startsWith('-')
+                  ? `מינוס ${floor.slice(1)}`
+                  : floor.startsWith('+')
+                  ? `פלוס ${floor.slice(1)}`
+                  : floor === '0'
+                  ? 'קרקע (0)'
+                  : floor}
+              </Text>
+            ) : null}
 
             {/* בורר צבע מתחם */}
             <Text style={styles.label}>צבע אזור / מתחם:</Text>
@@ -293,6 +305,13 @@ const styles = StyleSheet.create({
   selectedColorBadge: {
     borderWidth: 3,
     borderColor: '#FFFFFF',
+  },
+  selectedFloorLabel: {
+    color: '#38BDF8',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'right',
+    marginTop: 4,
   },
   selectedColorLabel: {
     color: '#38BDF8',

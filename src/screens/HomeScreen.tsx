@@ -230,17 +230,17 @@ export const HomeScreen: React.FC<Props> = ({ onNavigateToSettings }) => {
               onSetMeterReminder={() => setShowMeterModal(true)}
             />
 
+            {/* סרגל קיצורי דרך מהירים (פנגו, סלופארק, Waze, מפות) */}
+            <QuickActionsBar
+              location={session.location}
+              notes={session.garage?.notes}
+            />
+
             {/* מצפן ניווט רגלי לרכב */}
             <CompassRadar
               parkingLocation={session.location}
               currentDistanceMeters={liveDistance}
               bearingDegrees={bearingDegrees}
-            />
-
-            {/* סרגל קיצורי דרך מהירים */}
-            <QuickActionsBar
-              location={session.location}
-              notes={session.garage?.notes}
             />
           </View>
         ) : (
