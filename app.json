@@ -1,23 +1,72 @@
 {
   "expo": {
-    "name": "parkapp",
-    "slug": "parkapp",
+    "name": "ParkGuard - תזכורת חניה חכמה",
+    "slug": "parkguard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "scheme": "parkguard",
+    "splash": {
+      "backgroundColor": "#0F172A",
+      "resizeMode": "contain"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.parkguard.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "ParkGuard זקוקה לגישה למיקום כדי לשמור את מיקום הרכב החונה ולאפשר לך לנווט אליו.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "ParkGuard זקוקה לגישה למיקום ברקע כדי לזהות מתי התרחקת מהרכב במהירות נסיעה ולהזכיר לך לעצור את פנגו או סלופארק.",
+        "NSCameraUsageDescription": "ParkGuard זקוקה לגישה למצלמה כדי שתוכל לצלם את עמוד החניה או הקומה בחניון.",
+        "NSPhotoLibraryUsageDescription": "ParkGuard זקוקה לגישה לתמונות כדי לשמור את תמונת מקום החניה."
+      }
     },
     "android": {
+      "package": "com.parkguard.app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0F172A",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "POST_NOTIFICATIONS",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "BLUETOOTH",
+        "BLUETOOTH_ADMIN",
+        "BLUETOOTH_CONNECT"
+      ],
       "predictiveBackGestureEnabled": false
     },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "ParkGuard זקוקה לגישה למיקום ברקע כדי להתריע בעת תחילת נסיעה לעצירת פנגו וסלופארק."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "האפליקציה ניגשת לתמונות כדי לשמור תמונה של מקום החניה."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#10B981"
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }
