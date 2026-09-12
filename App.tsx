@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingTop: 8,
-    paddingBottom: Platform.OS === 'android' ? 16 : 8,
+    paddingBottom: Platform.OS === 'android' ? 40 : 16,
     backgroundColor: '#0F172A',
   },
   navItem: {
@@ -123,12 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 4,
-    gap: 4,
+    gap: 3,
   },
   navLabel: {
     color: '#64748B',
-    fontSize: 11,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '700',
   },
   activeNavLabel: {
     color: '#10B981',
