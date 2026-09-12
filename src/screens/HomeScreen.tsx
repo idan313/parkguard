@@ -9,6 +9,7 @@ import {
   Alert,
   SafeAreaView,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParkingSession, ParkingLocation, GarageDetails, DepartureAlertState, AppSettings } from '../types/parking';
@@ -245,23 +246,25 @@ export const HomeScreen: React.FC<Props> = ({ onNavigateToSettings }) => {
         ) : (
           /* מצב: אין חניה פעילה */
           <View style={styles.noParkingContainer}>
-            <View style={styles.pulseRing}>
-              <TouchableOpacity
-                style={styles.bigParkBtn}
-                onPress={handleParkNow}
-                disabled={isLocating}
-                activeOpacity={0.8}
-              >
-                {isLocating ? (
-                  <ActivityIndicator size="large" color="#FFFFFF" />
-                ) : (
-                  <>
-                    <MaterialCommunityIcons name="car-brake-parking" size={60} color="#FFFFFF" />
-                    <Text style={styles.bigParkBtnText}>חניתי כאן</Text>
-                    <Text style={styles.bigParkSub}>שמור מיקום והפעל מעקב</Text>
-                  </>
-                )}
-              </TouchableOpacity>
+            <View style={styles.parkBtnWrapper}>
+              <View style={styles.pulseRing}>
+                <TouchableOpacity
+                  style={styles.bigParkBtn}
+                  onPress={handleParkNow}
+                  disabled={isLocating}
+                  activeOpacity={0.8}
+                >
+                  {isLocating ? (
+                    <ActivityIndicator size="large" color="#FFFFFF" />
+                  ) : (
+                    <>
+                      <MaterialCommunityIcons name="car-brake-parking" size={60} color="#FFFFFF" />
+                      <Text style={styles.bigParkBtnText}>חניתי כאן</Text>
+                      <Text style={styles.bigParkSub}>שמור מיקום והפעל מעקב</Text>
+                    </>
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
 
             {/* חיווי זיהוי אוטומטי של Bluetooth */}
@@ -341,7 +344,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight || 28) + 12 : 14,
+    paddingBottom: 14,
     borderBottomWidth: 1,
     borderColor: '#1E293B',
   },
@@ -372,8 +376,12 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   noParkingContainer: {
+    width: '100%',
+    paddingVertical: 10,
+  },
+  parkBtnWrapper: {
     alignItems: 'center',
-    paddingVertical: 20,
+    marginVertical: 14,
   },
   pulseRing: {
     width: 220,
@@ -382,7 +390,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(16, 185, 129, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 20,
   },
   bigParkBtn: {
     width: 180,
@@ -410,6 +417,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   autoDetectBadge: {
+    alignSelf: 'center',
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 6,
@@ -419,7 +427,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#334155',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   autoDetectText: {
     color: '#94A3B8',
@@ -427,6 +435,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tipCard: {
+    width: '100%',
     flexDirection: 'row-reverse',
     backgroundColor: '#1E293B',
     borderRadius: 16,
@@ -435,7 +444,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#334155',
-    marginTop: 10,
+    marginTop: 6,
   },
   tipTextBox: {
     flex: 1,

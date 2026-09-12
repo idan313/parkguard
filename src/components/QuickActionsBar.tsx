@@ -21,8 +21,8 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
           activeOpacity={0.8}
         >
           <MaterialCommunityIcons name="parking" size={24} color="#FFFFFF" />
-          <Text style={styles.btnText}>פנגו</Text>
-          <Text style={styles.subText}>Pango</Text>
+          <Text style={styles.btnText} numberOfLines={1}>פנגו</Text>
+          <Text style={styles.subText} numberOfLines={1}>Pango</Text>
         </TouchableOpacity>
 
         {/* כפתור סלופארק */}
@@ -32,8 +32,8 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
           activeOpacity={0.8}
         >
           <Ionicons name="car-sport" size={24} color="#FFFFFF" />
-          <Text style={styles.btnText}>סלופארק</Text>
-          <Text style={styles.subText}>Cello</Text>
+          <Text style={styles.btnText} numberOfLines={1}>סלופארק</Text>
+          <Text style={styles.subText} numberOfLines={1}>Cello</Text>
         </TouchableOpacity>
 
         {/* כפתור Waze */}
@@ -47,9 +47,9 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
           disabled={!location}
           activeOpacity={0.8}
         >
-          <FontAwesome5 name="waze" size={24} color="#FFFFFF" />
-          <Text style={styles.btnText}>Waze</Text>
-          <Text style={styles.subText}>ניווט לרכב</Text>
+          <FontAwesome5 name="waze" size={22} color="#FFFFFF" />
+          <Text style={styles.btnText} numberOfLines={1}>Waze</Text>
+          <Text style={styles.subText} numberOfLines={1}>ניווט לרכב</Text>
         </TouchableOpacity>
 
         {/* כפתור Google Maps */}
@@ -64,8 +64,8 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
           activeOpacity={0.8}
         >
           <Ionicons name="navigate-circle" size={24} color="#FFFFFF" />
-          <Text style={styles.btnText}>מפות</Text>
-          <Text style={styles.subText}>ניווט רגלי</Text>
+          <Text style={styles.btnText} numberOfLines={1}>מפות</Text>
+          <Text style={styles.subText} numberOfLines={1}>ניווט רגלי</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -74,10 +74,11 @@ export const QuickActionsBar: React.FC<Props> = ({ location, notes }) => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     marginVertical: 12,
     backgroundColor: '#1E293B',
     borderRadius: 16,
-    padding: 16,
+    padding: 14,
     borderWidth: 1,
     borderColor: '#334155',
   },
@@ -89,13 +90,16 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   buttonsRow: {
+    width: '100%',
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     gap: 8,
   },
   actionBtn: {
     flex: 1,
+    minWidth: 0,
     paddingVertical: 12,
+    paddingHorizontal: 2,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -119,13 +123,15 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: '#FFFFFF',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
     marginTop: 4,
+    textAlign: 'center',
   },
   subText: {
     color: 'rgba(255, 255, 255, 0.85)',
     fontSize: 10,
     marginTop: 2,
+    textAlign: 'center',
   },
 });
